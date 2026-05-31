@@ -1,31 +1,63 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
+import { FaHome, FaShoppingCart, FaChartBar, FaCog, FaSearch, FaBell, FaBoxOpen } from 'react-icons/fa';
+import './Dashboard.css';
 
 const Dashboard = () => {
     const navigate = useNavigate();
+    const location = useLocation(); // Nos permite saber en qué URL estamos
 
-    // Función para cerrar sesión
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Destruimos el pase de seguridad
-        navigate('/login'); // Lo enviamos de vuelta a la puerta
+        localStorage.removeItem('token');
+        navigate('/login');
     };
 
     return (
-        <div style={{ padding: '40px', fontFamily: 'sans-serif' }}>
-            <h1 style={{ color: '#000000' }}>Panel de Control Principal</h1>
-            <p style={{ color: '#00b33c', fontWeight: 'bold' }}>¡Bienvenido al sistema protegido de Creando Ideas!</p>
-            
-            <div style={{ marginTop: '30px', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-                <h3>Módulo de Gestión</h3>
-                <p>Aquí construiremos las tablas para gestionar inventario, ventas y usuarios.</p>
-            </div>
+        <div className="dashboard-layout">
+            <aside className="sidebar">
+                <div className="sidebar-logo">
+                    <span className="logo-black">CREANDO</span> <span className="logo-green">IDEAS</span>
+                </div>
+                
+                <nav className="sidebar-menu">
+                    {/* Botón de Inicio */}
+                    <Link to="/dashboard" className={`menu-item ${location.pathname === '/dashboard' ? 'active' : ''}`} style={{ textDecoration: 'none' }}>
+                        <FaHome /> <span>Inicio</span>
+                    </Link>
+                    
+                    {/* Botón de Productos */}
+                    <Link to="/dashboard/productos" className={`menu-item ${location.pathname === '/dashboard/productos' ? 'active' : ''}`} style={{ textDecoration: 'none' }}>
+                        <FaBoxOpen /> <span>Productos</span>
+                    </Link>
 
-            <button 
-                onClick={handleLogout}
-                style={{ marginTop: '30px', padding: '10px 20px', backgroundColor: '#e74c3c', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
-            >
-                Cerrar Sesión
-            </button>
+                    <div className="menu-item"><FaShoppingCart /> <span>Pedidos</span></div>
+                    <div className="menu-item"><FaChartBar /> <span>Reportes</span></div>
+                    <div className="menu-item"><FaCog /> <span>Configuración</span></div>
+                </nav>
+
+                <button onClick={handleLogout} className="logout-btn">Cerrar Sesión</button>
+            </aside>
+
+            <main className="main-content">
+                <header className="navbar">
+                    <div className="search-bar">
+                        <FaSearch /> <input type="text" placeholder="Buscar..." />
+                    </div>
+                    <div className="user-profile">
+                        <FaBell className="bell-icon" />
+                        <div className="avatar-circle">A</div>
+                        <div className="user-info">
+                            <span className="user-name">Admin</span>
+                            <span className="user-role">Administrador</span>
+                        </div>
+                    </div>
+                </header>
+
+                {/* 👇 LA MAGIA ESTÁ AQUÍ: El Outlet pinta "Inicio" o "Productos" */}
+                <div style={{ padding: '0px' }}>
+                    <Outlet />
+                </div>
+            </main>
         </div>
     );
 };

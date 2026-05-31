@@ -11,6 +11,8 @@ app.use(express.json());
 // 👇 AQUÍ AGREGAMOS TUS RUTAS DE AUTENTICACIÓN 👇
 const authRoutes = require('./src/routes/authRoutes');
 app.use('/api/auth', authRoutes);
+const productoRoutes = require('./src/routes/productoRoutes');
+app.use('/api/productos', productoRoutes);
 
 app.get('/', (req, res) => {
     res.send('¡El servidor de Grupo Creando Ideas está funcionando perfectamente! 🚀');
