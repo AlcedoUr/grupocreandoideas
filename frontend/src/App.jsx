@@ -1,14 +1,24 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute'; // Importamos al guardián
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Ruta específica para el inicio de sesión */}
         <Route path="/login" element={<Login />} />
         
-        {/* Si alguien entra a la raíz "/", lo enviamos directo al login por seguridad */}
+        {/* Envolvemos el Dashboard con el componente de seguridad */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
