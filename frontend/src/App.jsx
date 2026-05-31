@@ -3,26 +3,30 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Inicio from './pages/Inicio';
 import Productos from './pages/Productos';
+import ProductoDetalle from './pages/ProductoDetalle';
+import Configuracion from './pages/Configuracion';
+import CatalogoPublico from './pages/CatalogoPublico'; // Importamos la vitrina
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* === RUTAS PÚBLICAS === */}
+        {/* Ahora la página principal (/) es tu tienda */}
+        <Route path="/" element={<CatalogoPublico />} />
+        <Route path="/producto/:id" element={<ProductoDetalle />} />
         <Route path="/login" element={<Login />} />
         
-        {/* Rutas Protegidas del Dashboard */}
+        {/* === RUTAS PROTEGIDAS (ADMINISTRADOR) === */}
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
-          {/* Index: Carga por defecto las gráficas al entrar a /dashboard */}
           <Route index element={<Inicio />} />
-          
-          {/* Sub-ruta: Carga la tabla al entrar a /dashboard/productos */}
           <Route path="productos" element={<Productos />} />
+          <Route path="configuracion" element={<Configuracion />} />
         </Route>
         
-        {/* Redirecciones de seguridad */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/productos" element={<Navigate to="/dashboard/productos" replace />} />
+        {/* Rutas no encontradas redirigen al catálogo */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

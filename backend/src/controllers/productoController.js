@@ -1,71 +1,62 @@
 const db = require('../config/db');
 
-// 1. (Read) Obtener todos los productos
 const obtenerProductos = (req, res) => {
-    const query = 'SELECT * FROM productos ORDER BY id DESC';
-    db.query(query, (err, results) => {
-        if (err) return res.status(500).json({ mensaje: 'Error al consultar la BD' });
+    db.query('SELECT * FROM productos ORDER BY id DESC', (err, results) => {
+        if (err) return res.status(500).json({ mensaje: 'Error BD' });
         res.status(200).json(results);
     });
 };
 
-// 2. (Create) Crear un nuevo producto
+const obtenerProductoPorId = (req, res) => {
+    db.query('SELECT * FROM productos WHERE id = ?', [req.params.id], (err, results) => {
+        if (err) return res.status(500).json({ mensaje: 'Error BD' });
+        if (results.length === 0) return res.status(404).json({ mensaje: 'Producto no encontrado' });
+        res.status(200).json(results[0]);
+    });
+};
+
 const crearProducto = (req, res) => {
-    // Extraemos los datos que nos enviará el Frontend
-    const { nombre, categoria, descripcion, precio_base, tiempo_produccion_minutos } = req.body;
+    // 👈 Agregamos opciones_disponibles
+    const { nombre, categoria, descripcion, precio_base, tiempo_produccion_minutos, opciones_disponibles } = req.body;
+    const imagen_url = req.file ? `/uploads/${req.file.filename}` : null;
 
-    // Instrucción SQL para insertar
-    const query = `
-        INSERT INTO productos (nombre, categoria, descripcion, precio_base, tiempo_produccion_minutos) 
-        VALUES (?, ?, ?, ?, ?)
-    `;
-
-    db.query(query, [nombre, categoria, descripcion, precio_base, tiempo_produccion_minutos], (err, results) => {
+    const query = `INSERT INTO productos (nombre, categoria, descripcion, precio_base, opciones_disponibles, tiempo_produccion_minutos, imagen_url) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    
+    db.query(query, [nombre, categoria, descripcion, precio_base, opciones_disponibles, tiempo_produccion_minutos, imagen_url], (err, results) => {
         if (err) {
-            console.error('Error creando producto:', err);
-            return res.status(500).json({ mensaje: 'Error al guardar el producto' });
+            console.error(err);
+            return res.status(500).json({ mensaje: 'Error guardando' });
         }
-        // Respondemos con el ID del nuevo producto creado
-        res.status(201).json({ 
-            mensaje: 'Producto creado con éxito', 
-            id: results.insertId 
-        });
+        res.status(201).json({ mensaje: 'Creado', id: results.insertId });
     });
 };
-// 3. (Update) Editar un producto existente
+
 const actualizarProducto = (req, res) => {
-    const { id } = req.params; // Sacamos el ID de la URL
-    const { nombre, categoria, descripcion, precio_base, tiempo_produccion_minutos } = req.body;
-
-    const query = `
-        UPDATE productos 
-        SET nombre = ?, categoria = ?, descripcion = ?, precio_base = ?, tiempo_produccion_minutos = ? 
-        WHERE id = ?
-    `;
-
-    db.query(query, [nombre, categoria, descripcion, precio_base, tiempo_produccion_minutos, id], (err, results) => {
-        if (err) {
-            console.error('Error actualizando producto:', err);
-            return res.status(500).json({ mensaje: 'Error al actualizar el producto' });
-        }
-        res.status(200).json({ mensaje: 'Producto actualizado con éxito' });
-    });
+    const { id } = req.params;
+    // 👈 Agregamos opciones_disponibles
+    const { nombre, categoria, descripcion, precio_base, tiempo_produccion_minutos, opciones_disponibles } = req.body;
+    
+    if (req.file) {
+        const imagen_url = `/uploads/${req.file.filename}`;
+        const query = `UPDATE productos SET nombre=?, categoria=?, descripcion=?, precio_base=?, opciones_disponibles=?, tiempo_produccion_minutos=?, imagen_url=? WHERE id=?`;
+        db.query(query, [nombre, categoria, descripcion, precio_base, opciones_disponibles, tiempo_produccion_minutos, imagen_url, id], (err) => {
+            if (err) return res.status(500).json({ mensaje: 'Error actualizando' });
+            res.status(200).json({ mensaje: 'Actualizado' });
+        });
+    } else {
+        const query = `UPDATE productos SET nombre=?, categoria=?, descripcion=?, precio_base=?, opciones_disponibles=?, tiempo_produccion_minutos=? WHERE id=?`;
+        db.query(query, [nombre, categoria, descripcion, precio_base, opciones_disponibles, tiempo_produccion_minutos, id], (err) => {
+            if (err) return res.status(500).json({ mensaje: 'Error actualizando' });
+            res.status(200).json({ mensaje: 'Actualizado' });
+        });
+    }
 };
 
-// 4. (Delete) Eliminar un producto
 const eliminarProducto = (req, res) => {
-    const { id } = req.params; // Sacamos el ID de la URL
-
-    const query = 'DELETE FROM productos WHERE id = ?';
-
-    db.query(query, [id], (err, results) => {
-        if (err) {
-            console.error('Error eliminando producto:', err);
-            return res.status(500).json({ mensaje: 'Error al eliminar el producto' });
-        }
-        res.status(200).json({ mensaje: 'Producto eliminado con éxito' });
+    db.query('DELETE FROM productos WHERE id = ?', [req.params.id], (err) => {
+        if (err) return res.status(500).json({ mensaje: 'Error' });
+        res.status(200).json({ mensaje: 'Eliminado' });
     });
 };
 
-// Asegúrate de exportar TODAS las funciones ahora:
-module.exports = { obtenerProductos, crearProducto, actualizarProducto, eliminarProducto };
+module.exports = { obtenerProductos, obtenerProductoPorId, crearProducto, actualizarProducto, eliminarProducto };

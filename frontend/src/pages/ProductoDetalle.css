@@ -1,0 +1,43 @@
+.detalle-page { background-color: #f8f9fa; min-height: 100vh; padding: 40px 20px; font-family: 'Segoe UI', sans-serif; }
+.detalle-container { max-width: 1100px; margin: 0 auto; }
+.btn-volver { background: none; border: none; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; margin-bottom: 30px; color: #000; }
+.btn-volver:hover { color: #00b33c; }
+
+.detalle-layout { display: flex; gap: 40px; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
+@media(max-width: 800px) { .detalle-layout { flex-direction: column; } }
+
+.detalle-imagen-box { flex: 1; position: relative; border-radius: 12px; overflow: hidden; background: #f0f0f0; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.img-full { width: 100%; height: 100%; object-fit: cover; }
+.img-placeholder { color: #999; font-size: 20px; }
+.badge-destacado { position: absolute; bottom: 20px; background: white; color: #00b33c; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+.detalle-info-box { flex: 1; display: flex; flex-direction: column; }
+.detalle-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.detalle-categoria { color: #00b33c; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+.icon-heart { color: #ccc; font-size: 20px; cursor: pointer; }
+.icon-heart:hover { color: #e74c3c; }
+
+.detalle-titulo { font-size: 32px; margin: 0 0 15px 0; color: #000; }
+.detalle-desc { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 25px; }
+
+.detalle-precio-box { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #eaeaea; }
+.precio-grande { font-size: 36px; font-weight: bold; color: #00b33c; }
+.precio-sub { font-size: 14px; color: #888; margin-left: 10px; }
+
+.alerta-stock { background: #e6f7eb; color: #006622; padding: 15px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 10px; margin-bottom: 25px; }
+
+.opcion-grupo { margin-bottom: 20px; }
+.opcion-grupo p { margin: 0 0 10px 0; font-size: 14px; color: #666; }
+.opcion-grupo strong { color: #00b33c; }
+.botones-opcion { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-opt { background: white; border: 1px solid #ddd; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; color: #333; transition: all 0.2s; }
+.btn-opt.active { border-color: #00b33c; color: #00b33c; box-shadow: 0 0 0 1px #00b33c; }
+
+.cantidad-total-box { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; margin-bottom: 20px; padding-top: 20px; }
+.selector-cantidad { display: flex; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; }
+.selector-cantidad button { background: white; border: none; padding: 10px 15px; cursor: pointer; font-size: 16px; font-weight: bold; }
+.selector-cantidad button:hover { background: #f0f0f0; }
+.selector-cantidad span { padding: 10px 20px; border-left: 1px solid #ddd; border-right: 1px solid #ddd; font-weight: bold; display: flex; align-items: center; }
+
+.btn-carrito { background: #00b33c; color: white; border: none; padding: 18px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.2s; }
+.btn-carrito:hover { background: #009933; }

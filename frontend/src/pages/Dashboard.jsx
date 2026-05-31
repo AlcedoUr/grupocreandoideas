@@ -30,6 +30,11 @@ const Dashboard = () => {
                         <FaBoxOpen /> <span>Productos</span>
                     </Link>
 
+                    {/* 👇 NUEVO BOTÓN AQUÍ 👇 */}
+                    <Link to="/dashboard/configuracion" style={{ display: 'block', color: 'white', padding: '10px', textDecoration: 'none', marginBottom: '10px', borderRadius: '5px', backgroundColor: '#00cc44' }}>
+                    ⚙️ Configuración
+                    </Link>
+
                     <div className="menu-item"><FaShoppingCart /> <span>Pedidos</span></div>
                     <div className="menu-item"><FaChartBar /> <span>Reportes</span></div>
                     <div className="menu-item"><FaCog /> <span>Configuración</span></div>

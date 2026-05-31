@@ -8,9 +8,14 @@ const app = express();
 app.use(cors()); 
 app.use(express.json()); 
 
+const path = require('path');
+// Permitir acceso público a la carpeta de imágenes
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 👇 AQUÍ AGREGAMOS TUS RUTAS DE AUTENTICACIÓN 👇
 const authRoutes = require('./src/routes/authRoutes');
 app.use('/api/auth', authRoutes);
+const categoriaRoutes = require('./src/routes/categoriaRoutes');
+app.use('/api/categorias', categoriaRoutes);
 const productoRoutes = require('./src/routes/productoRoutes');
 app.use('/api/productos', productoRoutes);
 
